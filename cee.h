@@ -19,10 +19,6 @@
 // for array function parameters
 #define atleast static
 
-// compile-time assert:
-/* #define ct_assert(e) struct { char compile_time_assert[(e) ? 1 : -1]; } */
-#define ct_assert(e) typedef char compile_time_assertion[(e) ? 1 : -1]
-
 // INTERNAL TO HEADER //
 #define CEE_CAT1(a,b) a ## b
 #define CEE_CAT2(a,b) CEE_CAT1(a,b)
@@ -39,6 +35,10 @@
 #define CEE_SECOND(a, b, ...) b
 #define CEE_HAS_MULTIPLE(...) CEE_SECOND((__VA_ARGS__), (DUMMY1), DUMMY2)
 CEE_REST(__VA_ARGS__ )
+
+// compile-time assert:
+/* #define ct_assert(e) struct { char compile_time_assert[(e) ? 1 : -1]; } */
+#define ct_assert(e) typedef char CEE_CAT(compile_time_assertion, __LINE__)[(e) ? 1 : -1]
 
 #if 1 // TYPES //
 
