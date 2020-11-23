@@ -218,18 +218,18 @@ typedef union CeeStringId {
 
 
 #if 1 // LOOPS
-#define array_len(a) (sizeof(a)/sizeof(*(a)))
-#define countof(a) (sizeof(a)/sizeof(*(a)))
+#define array_len(...) (sizeof(__VA_ARGS__)/sizeof(*(__VA_ARGS__)))
+#define countof(...) (sizeof(__VA_ARGS__)/sizeof(*(__VA_ARGS__)))
 /* #ifndef  offsetof */
 /* # define offsetof(st, m) (&((st *)0)->m) */
 /* #endif */
 /* #ifndef  alignof */
 /* # define alignof(t) (&((struct{char c; t m} *)0)->m) */
 /* #endif */
-#define ARRAY__N(a) (a), countof(a)
-#define N__ARRAY(a) countof(a), (a)
-#define ARRAY__SIZE(a) (a), sizeof(a)
-#define SIZE__ARRAY(a) sizeof(a), (a)
+#define ARRAY__N(...) (__VA_ARGS__), countof(__VA_ARGS__)
+#define N__ARRAY(...) countof(__VA_ARGS__), (__VA_ARGS__)
+#define ARRAY__SIZE(...) (__VA_ARGS__), sizeof(__VA_ARGS__)
+#define SIZE__ARRAY(...) sizeof(__VA_ARGS__), (__VA_ARGS__)
 #define STR_LIT__SIZE(a) (a), sizeof(a)
 #define SIZE__STR_LIT(a) sizeof(a), (a)
 #define STR_LIT__LEN(a) (a), (sizeof(a)-1)
