@@ -242,7 +242,7 @@ typedef union CeeStringId {
 // TODO: use (unsigned) -1 to allow unsigned loops to zero with same format
 //#define range(t, i, start, end) (t i = (start), cee_a = ((end) < (start) ? (t)-1 : +1), cee_n = (t)(end)-((end) < (start) ? (t)1 : 0); i != cee_n; i += cee_a)
 #define range(t, i, start, end) (t i = (start); i != (end); i += 1)
-#define range_n(t, i, start, end_name, end_val) (t i = (start), end_name = (end_val); i != (end_val); i += 1)
+#define range_n(t, i, start, end_name, end_val) (t i = (start), end_name = (end_val); i != end_name; i += 1)
 #define upto(t, i, end) (t i = 0; i < end; ++i)
 #define repeat(n) for (Size cee_n = (n); cee_n-- > 0;)
 
