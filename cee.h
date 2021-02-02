@@ -226,23 +226,25 @@ typedef union CeeStringId {
 /* #ifndef  alignof */
 /* # define alignof(t) (&((struct{char c; t m} *)0)->m) */
 /* #endif */
-#define ARRAY__N(...) (__VA_ARGS__), countof(__VA_ARGS__)
-#define N__ARRAY(...) countof(__VA_ARGS__), (__VA_ARGS__)
+#define ARRAY__N(...)    (__VA_ARGS__), countof(__VA_ARGS__)
+#define N__ARRAY(...)    countof(__VA_ARGS__), (__VA_ARGS__)
 #define ARRAY__SIZE(...) (__VA_ARGS__), sizeof(__VA_ARGS__)
 #define SIZE__ARRAY(...) sizeof(__VA_ARGS__), (__VA_ARGS__)
 #define STR_LIT__SIZE(a) (a), sizeof(a)
 #define SIZE__STR_LIT(a) sizeof(a), (a)
-#define STR_LIT__LEN(a) (a), (sizeof(a)-1)
-#define LEN__STR_LIT(a) (sizeof(a)-1), (a)
+#define STR_LIT__LEN(a)  (a), (sizeof(a)-1)
+#define LEN__STR_LIT(a)  (sizeof(a)-1), (a)
 
 // TODO: typeof variants
 // TODO: can define struct with all components of loop...
 #define each
-#define all(t, a, ...) (t cee_a = __VA_ARGS__, *cee_b = cee_a, *cee_n = cee_b + countof(cee_a), a = *cee_b; cee_b != cee_n; a = *++cee_b)
+// NOTE: because this uses the auto-coercing void *, this will only work in C, not C++, this is required because it's unknown what level of pointer t is
+#define all(t, a, ...) (t a = __VA_ARGS__, *cee_n = (void*)((char*)a + sizeof(__VA_ARGS__)); (void*)a < (void*)cee_n; ++a)
+#define all_lit(t, a, ...) all(t*, a, (t[])__VA_ARGS__)
 // TODO: use (unsigned) -1 to allow unsigned loops to zero with same format
 //#define range(t, i, start, end) (t i = (start), cee_a = ((end) < (start) ? (t)-1 : +1), cee_n = (t)(end)-((end) < (start) ? (t)1 : 0); i != cee_n; i += cee_a)
-#define range(t, i, start, end) (t i = (start); i != (end); i += 1)
-#define range_n(t, i, start, end_name, end_val) (t i = (start), end_name = (end_val); i != end_name; i += 1)
+#define range(  t, i, start, end) (t i = (start); i != (end); i += 1)
+#define range_n(t, i, start, end) (t i = (start), cee_n = (end); i != cee_n; i += 1)
 #define upto(t, i, end) (t i = 0; i < end; ++i)
 #define repeat(n) for (Size cee_n = (n); cee_n-- > 0;)
 
@@ -264,6 +266,8 @@ typedef union CeeStringId {
  * 		struct my_function_name_result result = {0};
  * 		return result;
  * }
+ *
+ * struct my_function_name_result result = my_function_name();
  */
 
 // USEFUL CONSTANTS FOR LAYOUT
