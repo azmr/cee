@@ -271,13 +271,60 @@ typedef union CeeStringId {
  * struct my_function_name_result result = my_function_name();
  */
 
-// USEFUL CONSTANTS FOR LAYOUT
+#if 1  // BINARY
+#define BITS_0000 0x0
+#define BITS_0001 0x1
+#define BITS_0010 0x2
+#define BITS_0011 0x3
+#define BITS_0100 0x4
+#define BITS_0101 0x5
+#define BITS_0110 0x6
+#define BITS_0111 0x7
+#define BITS_1000 0x8
+#define BITS_1001 0x9
+#define BITS_1010 0xa
+#define BITS_1011 0xb
+#define BITS_1100 0xc
+#define BITS_1101 0xd
+#define BITS_1110 0xe
+#define BITS_1111 0xf
+
+#define BITS_4(a)   BITS_##a
+#define BITS_8(a,b)               ((BITS_##a <<  4) | BITS_##b)
+#define BITS_16(a,b,c,d)          ((BITS_##a << 12) | (BITS_##b <<  8) | (BITS_##c << 4) | BITS_##d)
+#define BITS_32(a,b,c,d, e,f,g,h) ((BITS_##a << 28) | (BITS_##b << 24) | (BITS_##c << 20) | (BITS_##d << 16) |\
+                                   (BITS_##e << 12) | (BITS_##f <<  8) | (BITS_##g <<  4) | (BITS_##h))
+#define BITS_64(a,b,c,d, e,f,g,h, i,j,k,l, m,n,o,p) (((long long)BITS_32(a,b,c,d, e,f,g,h) << 32) | BITS_32(i,j,k,l, m,n,o,p))
+
+#if 0  // USAGE
+enum { My_Bits = BITS_8(0010, 1100) };
+#endif // USAGE
+#endif // BINARY
+
+
+// USEFUL CONSTANTS FOR QUASI-RANDOM LAYOUT
 static const double Golden_Ratio     = 1.61803398874989484820458683436563;
 static const double Phi1             = 1.61803398874989484820458683436563;
 static const double Plastic_Constant = 1.32471795724474602596090885447809;
 static const double Phi2             = 1.32471795724474602596090885447809;
 static const double Phi3             = 1.220744084605759475361685349108831;
 
+#if 0  // USAGE
+// for use with `n` points in `d` dimensions:
+
+g = Phi_d
+
+a1 = 1.0/g
+a2 = 1.0/(g*g)
+a3 = 1.0/(g*g*g)
+...
+
+unused;
+x[n] = modf(0.5+a1*n, &unused) // fractional part, i.e. between 0 & 1
+y[n] = modf(0.5+a2*n, &unused)
+z[n] = modf(0.5+a3*n, &unused)
+...
+#endif // USAGE
 
 #define CEE_H
 #endif//CEE_H
