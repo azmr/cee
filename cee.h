@@ -34,7 +34,6 @@
 
 #define CEE_SECOND(a, b, ...) b
 #define CEE_HAS_MULTIPLE(...) CEE_SECOND((__VA_ARGS__), (DUMMY1), DUMMY2)
-CEE_REST(__VA_ARGS__ )
 
 // compile-time assert:
 /* #define ct_assert(e) struct { char compile_time_assert[(e) ? 1 : -1]; } */
@@ -42,10 +41,8 @@ CEE_REST(__VA_ARGS__ )
 
 #if 1 // TYPES //
 
-#define cast(type, data) ((type)(data))
-#define ptr_cast(type, data) ((type)(uintptr_t)(data))
-
 #include <stdint.h>
+#include <stddef.h>
 
 // bytes //
 typedef uint8_t  U1;
@@ -110,17 +107,19 @@ typedef void *        Addr;
 
 // TYPE CREATION //
 // NOTE: if you don't add the brackets these just act as normal: e.g. struct MyType vs struct (MyType)
-#define struct(s) struct s; typedef struct s s; struct s
-#define union(s)  union  s; typedef union  s s; union  s
-#define enum(s)   enum   s; typedef enum   s s; enum   s
+/* #define struct(s) struct s; typedef struct s s; struct s */
+/* #define union(s)  union  s; typedef union  s s; union  s */
+/* #define enum(s)   enum   s; typedef enum   s s; enum   s */
 
 // create a label as well as a case jump point
 /* #define case(c) case c: case_## c */
 
 // CASTING //
-#define cast(t, value) ((t)(value))
+
+#define cast(type, data) ((type)(data))
+#define ptr_cast(type, data) ((type)(uintptr_t)(data))
 // "bitcast"?
-#define recast(ti, to, value) (((union { ti in, char b[sizeof(value)]; to out; }){value}).out)
+#define recast(ti, to, value) (((union { ti in; char b[sizeof(value)]; to out; }){value}).out)
 
 #endif // TYPES
 
