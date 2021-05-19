@@ -19,7 +19,6 @@
 // for array function parameters
 #define atleast static
 
-// INTERNAL TO HEADER //
 #define CEE_CAT1(a,b) a ## b
 #define CEE_CAT2(a,b) CEE_CAT1(a,b)
 #define CEE_CAT(a,b)  CEE_CAT2(a,b)
@@ -27,6 +26,7 @@
 #define cee_n CEE_CAT(cee_internal_n_, __LINE__)
 #define cee_a CEE_CAT(cee_internal_a_, __LINE__)
 #define cee_b CEE_CAT(cee_internal_b_, __LINE__)
+#define CEE_LINE(a) CEE_CAT(a, __LINE__)
 
 #define CEE_FIRST(a, ...) a
 #define CEE_FIRST_ONLY(...) CEE_FIRST(__VA_ARGS__, DUMMY)
@@ -38,6 +38,13 @@
 // compile-time assert:
 /* #define ct_assert(e) struct { char compile_time_assert[(e) ? 1 : -1]; } */
 #define ct_assert(e) typedef char CEE_CAT(compile_time_assertion, __LINE__)[(e) ? 1 : -1]
+
+#define CEE_IF_0(...)
+#define CEE_IF_1(...) __VA_ARGS__
+#define IF(pred, ...) CEE_CAT(CEE_IF_, pred)(__VA_ARGS__)
+#define CEE_IFE_0(t, f) f
+#define CEE_IFE_1(t, f) t
+#define IF_ELSE(pred, t, f) CEE_CAT(CEE_IFE_, pred)(t, f)
 
 #if 1 // TYPES //
 
