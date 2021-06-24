@@ -277,6 +277,43 @@ typedef union CeeStringId {
  * struct my_function_name_result result = my_function_name();
  */
 
+#define VAR_ARGS(t, ...) N__ARRAY((t[]){ __VA_ARGS__ })
+
+#if 0  // VAR_ARGS USAGE
+typedef struct { int x; float f; } MyData;
+
+void my_fn(Size n, MyData *data)
+{   for (Size i = 0; i < n; ++i) { ... }   }
+
+#define my_fn(...) my_fn(VAR_ARGS(MyData, __VA_ARGS__))
+
+MyData d = {0};
+my_fn({42, 3.14f}, d, {68, 6.28f});
+#endif // VAR_ARGS USAGE
+
+#define NAMED_ARGS_PTR(t, ...) (&(t){ __VA_ARGS__ })
+#define NAMED_ARGS(t, ...)  ((t){ __VA_ARGS__ })
+
+
+#if 0  // NAMED_ARGS USAGE
+typedef struct { int data; bool add_new_lines; int repeat_n; } MyOpts;
+
+void my_fn(int a, MyOpts opts)
+{
+    printf("%d: ", a);
+    while (opts->repeat_n --> 0)
+    {
+        print("%d%s", data,
+              opts->add_new_lines ? "\n" : "");
+    }
+}
+
+#define my_fn(a, ...) my_fn((a), NAMED_ARGS(MyOpts, __VA_ARGS__))
+
+my_fn(42, 12, .repeat_n=6);
+#endif // NAMED_ARGS USAGE
+
+
 #if 1  // BINARY
 #define BITS_0000 0x0
 #define BITS_0001 0x1
