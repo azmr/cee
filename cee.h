@@ -229,8 +229,12 @@ typedef union CeeStringId {
 /* #ifndef  offsetof */
 /* # define offsetof(st, m) (&((st *)0)->m) */
 /* #endif */
+
+#define member_of(t, m) (((t *)0)->m)
+#define container_of(t, m, p) ((t *)((char*)(p) - offsetof(t, m)))
+
 #ifndef  alignof
-# define alignof(t) ((UPtr)&((struct{char c; t m;} *)0)->m)
+# define alignof(t) ((UPtr)&(member_of(struct{char c; t m;}, m)))
 #endif
 #define ARRAY__N(...)    (__VA_ARGS__), countof(__VA_ARGS__)
 #define N__ARRAY(...)    countof(__VA_ARGS__), (__VA_ARGS__)
