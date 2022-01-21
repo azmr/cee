@@ -49,6 +49,7 @@
 #if 1 // TYPES //
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 // bytes //
@@ -100,13 +101,13 @@ typedef float    F32b;
 typedef double   F64b;
 
 // named //
-typedef char          Char;
-typedef unsigned char Byte;
-typedef int           Bool;
-typedef size_t        Size;
-typedef uintptr_t     UPtr;
-typedef intptr_t      SPtr;
-typedef void *        Addr;
+typedef struct { unsigned char val; } Byte;
+typedef char      Char;
+typedef bool     Bool;
+typedef size_t    Size;
+typedef uintptr_t UPtr;
+typedef intptr_t  SPtr;
+typedef void *    Addr;
 
 #define ARR_LEN_BITS(bits) ((bits / CHAR_BIT) + (bits % CHAR_BIT > 0))
 
