@@ -124,6 +124,8 @@ typedef void *    Addr;
 
 // CASTING //
 
+// TODO: option to use _Generic or similar mechanism to check both in & out type for cast.
+//       (you want to have the in type to catch any times when you change the in typedef)
 #define cast(type, data) ((type)(data))
 #define ptr_cast(type, data) ((type)(uintptr_t)(data))
 // "bitcast"?
@@ -187,6 +189,7 @@ typedef union CeeStringId {
 
 #if 1 // SCOPES
 // TODO: not sure about naming here... see how they tend to be used in practice
+// TODO: could add an extra for loop just as a check for incorrect breaks inside
 #define scoped(start, end) for(char cee_n = ((start), 0); !cee_n++; end)
 #define before_after(when, ...) for(char const *when = "before", *cee_n = ((__VA_ARGS__), when); cee_n; when = "after", cee_n = 0, __VA_ARGS__)
 // NOTE: MUST use a type
