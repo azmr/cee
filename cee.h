@@ -19,9 +19,13 @@
 // for array function parameters
 #define atleast static
 
-#define CEE_CAT1(a,b) a ## b
-#define CEE_CAT2(a,b) CEE_CAT1(a,b)
-#define CEE_CAT(a,b)  CEE_CAT2(a,b)
+#define CEE_CAT__(a,b) a ## b
+#define CEE_CAT_(a,b) CEE_CAT__(a,b)
+#define CEE_CAT(a,b)  CEE_CAT_(a,b)
+
+#define CEE_CAT3__(a,b,c) a ## b ## c
+#define CEE_CAT3_(a,b,c) CEE_CAT3__(a,b,c)
+#define CEE_CAT3(a,b,c)  CEE_CAT3_(a,b,c)
 
 #define cee_n CEE_CAT(cee_internal_n_, __LINE__)
 #define cee_a CEE_CAT(cee_internal_a_, __LINE__)
@@ -45,6 +49,31 @@
 #define CEE_IFE_0(t, f) f
 #define CEE_IFE_1(t, f) t
 #define IF_ELSE(pred, t, f) CEE_CAT(CEE_IFE_, pred)(t, f)
+
+
+// truth table for any binary op
+#define CEE_TT_00(out_00, out_01, out_10, out_11) out_00
+#define CEE_TT_01(out_00, out_01, out_10, out_11) out_01
+#define CEE_TT_10(out_00, out_01, out_10, out_11) out_10
+#define CEE_TT_11(out_00, out_01, out_10, out_11) out_11
+#define CEE_TT(a, b, out_00, out_01, out_10, out_11) CEE_CAT3(CEE_OR_, a, b)(out_00, out_01, out_10, out_11)
+
+// NOTE: these are done without the truth table as I think it's slightly faster for the preprocessor
+#define CEE_OR_00() 0
+#define CEE_OR_01() 1
+#define CEE_OR_10() 1
+#define CEE_OR_11() 1
+#define OR(a, b) CEE_CAT3(CEE_OR_, a, b)()
+
+#define CEE_AND_00() 0
+#define CEE_AND_01() 0
+#define CEE_AND_10() 0
+#define CEE_AND_11() 1
+#define AND(a, b) CEE_CAT3(CEE_AND_, a, b)()
+
+#define CEE_NOT_0() 1
+#define CEE_NOT_1() 0
+#define NOT(pred) CEE_CAT(CEE_NOT_, pred)()
 
 #if 1 // TYPES //
 
