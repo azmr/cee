@@ -151,14 +151,15 @@ typedef void *    Addr;
 // create a label as well as a case jump point
 /* #define case(c) case c: case_## c */
 
-// CASTING //
+#ifndef CEE_NO_CAST// CASTING //
 
 // TODO: option to use _Generic or similar mechanism to check both in & out type for cast.
 //       (you want to have the in type to catch any times when you change the in typedef)
-#define cast(type, data) ((type)(data))
-#define ptr_cast(type, data) ((type)(uintptr_t)(data))
+# define cast(type, data) ((type)(data))
+# define ptr_cast(type, data) ((type)(uintptr_t)(data))
 // "bitcast"?
-#define recast(ti, to, value) (((union { ti in; char b[sizeof(value)]; to out; }){value}).out)
+# define recast(ti, to, value) (((union { ti in; char b[sizeof(value)]; to out; }){value}).out)
+#endif//CEE_NO_CAST
 
 #endif // TYPES
 
@@ -266,7 +267,7 @@ typedef union CeeStringId {
 #define member_of(t, m) (((t *)0)->m)
 #define container_of(t, m, p) ((t *)((char*)(p) - offsetof(t, m)))
 
-#ifndef  alignof
+#if !defined(alignof) && !defined(__cplusplus)
 # define alignof(t) ((UPtr)&(member_of(struct{char c; t m;}, m)))
 #endif
 #define ARRAY__N(...)    (__VA_ARGS__), countof(__VA_ARGS__)
@@ -299,7 +300,9 @@ typedef union CeeStringId {
 #define case_label(x) case x: case_## x
 // case_label(3): dostuff(); break;
 // case_label(4): dootherstuff(); goto case_3;
-#define fallthrough
+#ifndef CEE_NO_FALLTHROUGH
+# define fallthrough
+#endif//CEE_NO_FALLTHROUGH
 
 // FUNCTIONS //
 // XXX: meh...
