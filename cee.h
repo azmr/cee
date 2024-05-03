@@ -136,7 +136,6 @@ typedef bool     Bool;
 typedef size_t    Size;
 typedef uintptr_t UPtr;
 typedef intptr_t  SPtr;
-typedef void *    Addr;
 
 #define ARR_LEN_BITS(bits) ((bits / CHAR_BIT) + (bits % CHAR_BIT > 0))
 
