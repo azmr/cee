@@ -286,9 +286,9 @@ typedef union CeeStringId {
 #define all_lit(t, a, ...) all(t*, a, (t[])__VA_ARGS__)
 // TODO: use (unsigned) -1 to allow unsigned loops to zero with same format
 //#define range(t, i, start, end) (t i = (start), cee_a = ((end) < (start) ? (t)-1 : +1), cee_n = (t)(end)-((end) < (start) ? (t)1 : 0); i != cee_n; i += cee_a)
-#define range(  t, i, start, end) (t i = (start); i != (end); i += 1)
-#define range_const(t, i, start, end) (t i = (start), cee_n = (end); i != cee_n; i += 1)
-#define range_n(t, i, start, n, end) (t i = (start), n = (end); i != n; i += 1)
+#define range(  t, i, start, end) (t i = (start); i < (end); i += 1)
+#define range_const(t, i, start, end) (t i = (start), cee_n = (end); i < cee_n; i += 1)
+#define range_n(t, i, start, n, end) (t i = (start), n = (end); i < n; i += 1)
 #define upto(t, i, end) (t i = 0; i < end; ++i)
 #define repeat(n) for (Size cee_n = (n); cee_n-- > 0;)
 
