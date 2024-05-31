@@ -156,8 +156,8 @@ typedef intptr_t  SPtr;
 //       (you want to have the in type to catch any times when you change the in typedef)
 # define cast(to_type, from_type, data) _Generic(data, from_type: (to_type)(data))
 # define ptr_cast(to_type, from_type, data) _Generic(data, from_type: (to_type)(uintptr_t)(data))
-// "bitcast"?
-# define recast(ti, to, value) (((union { ti in; char b[sizeof(value)]; to out; }){value}).out)
+// "bitcast"/"transmute"?
+# define recast(to_type, from_type, data) (((union { from_type from; to_type to; }){_Generic(data, from_type: data)}).to)
 #endif//CEE_NO_CAST
 
 #endif // TYPES
