@@ -163,6 +163,77 @@ typedef intptr_t  SPtr;
 #endif // TYPES
 
 #if 1 // VALUES
+#define U8_FROM_STR(STR, i) (\
+        ((U8)(STR)[(i)+0]      )|\
+        ((U8)(STR)[(i)+1] <<  8)|\
+        ((U8)(STR)[(i)+2] << 16)|\
+        ((U8)(STR)[(i)+3] << 24)|\
+        ((U8)(STR)[(i)+4] << 32)|\
+        ((U8)(STR)[(i)+5] << 40)|\
+        ((U8)(STR)[(i)+6] << 48)|\
+        ((U8)(STR)[(i)+7] << 56))
+#define U4_FROM_STR(STR, i) (\
+        ((U4)(STR)[(i)+0]      )|\
+        ((U4)(STR)[(i)+1] <<  8)|\
+        ((U4)(STR)[(i)+2] << 16)|\
+        ((U4)(STR)[(i)+3] << 24)|\
+
+// expanded out to avoid lots of macro expansions
+// expects filenames to be at minimum "a.c" (with a trailing \0)
+#define SRC_LOC_HASH_PATH __FILE__"----"
+#define SRC_LOC_HASH() (\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__      [0])|\
+        ((U8)__FILE__      [1] <<  8)|\
+        ((U8)__FILE__      [2] << 16)|\
+        ((U8)__FILE__      [3] << 24)|\
+        ((U8)__FILE__"----"[4] << 32)|\
+        ((U8)__FILE__"----"[5] << 40)|\
+        ((U8)__FILE__"----"[6] << 48)|\
+        ((U8)__FILE__"----"[7] << 56))) ^\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-8])|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-7] <<  8)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-6] << 16)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-5] << 24)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-4] << 32)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-3] << 40)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-2] << 48)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-1] << 56))) ^\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__      [sizeof(__FILE__)/2+0]      )|\
+        ((U8)__FILE__      [sizeof(__FILE__)/2+1] <<  8)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)/2+2] << 16)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)/2+3] << 24))) ^\
+    (16778306499591715409ull*__LINE__))
+
+#define SRC_LOC_VAL_HASH(val) (\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__      [0])|\
+        ((U8)__FILE__      [1] <<  8)|\
+        ((U8)__FILE__      [2] << 16)|\
+        ((U8)__FILE__      [3] << 24)|\
+        ((U8)__FILE__"----"[4] << 32)|\
+        ((U8)__FILE__"----"[5] << 40)|\
+        ((U8)__FILE__"----"[6] << 48)|\
+        ((U8)__FILE__"----"[7] << 56))) ^\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-8])|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-7] <<  8)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-6] << 16)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-5] << 24)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-4] << 32)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-3] << 40)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-2] << 48)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)-1] << 56))) ^\
+    (16778306499591715409ull * (\
+        ((U8)__FILE__      [sizeof(__FILE__)/2+0])|\
+        ((U8)__FILE__      [sizeof(__FILE__)/2+1] <<  8)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)/2+2] << 16)|\
+        ((U8)__FILE__"----"[sizeof(__FILE__)/2+3] << 24))) ^\
+    (16778306499591715409ull * __LINE__) ^\
+    (16778306499591715409ull * (U8)(val)))
+
 #if 0 // ID VALUES
 // 7 char string as numeric value
 // NOTE: d7 had implementation
